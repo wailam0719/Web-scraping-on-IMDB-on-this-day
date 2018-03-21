@@ -42,15 +42,22 @@ for month in range(1,13):
     for day in range(1,32):
          month_2d  = '{:02d}'.format(month)
          day_2d = '{:02d}'.format(day)
-         url_birth = url_front + str(month_2d) + "-" + str(day_2d)
+         for i in range(0,41):
+             page = i*50
+             if page < 50 :
+                 url_birth = url_front + str(month_2d) + "-" + str(day_2d)
+             else:
+                 url_birth = url_front + str(month_2d) + "-" + str(day_2d) + "&start=" + str(page+1) + "&ref_=rlm"
+             
             
-         print(url_birth)
-         content = movie_birth(url_birth)
-         if len(content) > 0:
-                filepath = month_2d+day_2d+".csv"
+             print(url_birth)
+             content = movie_birth(url_birth)
+             if len(content) > 0:
+                filepath = month_2d+day_2d+"_"+str(i+1)+".csv"
                 
                 with open(filepath, 'w', newline='') as csvfile:
                     mywriter = csv.writer(csvfile)
                     mywriter.writerows(content)   
                     print(filepath,"saved.")
-                  
+             elif len(content) == 0:
+                  break
